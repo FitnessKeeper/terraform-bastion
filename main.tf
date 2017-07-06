@@ -32,10 +32,11 @@ data "template_file" "bastion_user_data" {
   template = "${file("${path.module}/files/user_data/bastion.sh")}"
 
   vars {
-    eip    = "${var.enable_eip ? aws_eip.bastion.public_ip : "" }"
-    eip_id = "${var.enable_eip ? aws_eip.bastion.id : "" }"
-    env    = "${var.env}"
-    region = "${var.region}"
+    svc_name = "${replace(var.hostname, "/\\..+$/","")}" # Strip dot hostnames so foo.bar becomes foo
+    eip      = "${var.enable_eip ? aws_eip.bastion.public_ip : "" }"
+    eip_id   = "${var.enable_eip ? aws_eip.bastion.id : "" }"
+    env      = "${var.env}"
+    region   = "${var.region}"
   }
 }
 

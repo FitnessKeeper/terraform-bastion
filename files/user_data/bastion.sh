@@ -38,3 +38,21 @@ mdir -p /etc/consul
 cat <<"CONSUL" > /etc/consul/config.json
 {"data_dir":"/opt/consul","datacenter":"rk-dev-infra","log_level":"INFO","raft_protocol":3,"retry_join_ec2":{"tag_key":"consul_server","tag_value":"true"}}
 CONSUL
+
+mkdir -p /etc/consul
+cat <<"BASTION" > /etc/consul/${svc_name}.json
+{
+  "service": {
+    "name": "${svc_name}",
+    "address": "",
+    "port": 22,
+    "checks": [
+      {
+        "script": "nc localhost 22",
+        "interval": "10s"
+      }
+    ]
+  }
+}
+BASTION
+/usr/local/bin/consul reload
