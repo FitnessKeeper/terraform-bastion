@@ -32,7 +32,7 @@ data "template_file" "bastion_user_data" {
   template = "${file("${path.module}/files/user_data/bastion.sh")}"
 
   vars {
-    svc_name = "${replace(var.hostname, "/\\..+$/","")}" # Strip dot hostnames so foo.bar becomes foo
+    svc_name = "${replace(var.hostname, "/\\..+$/","")}"             # Strip dot hostnames so foo.bar becomes foo
     eip      = "${var.enable_eip ? aws_eip.bastion.public_ip : "" }"
     eip_id   = "${var.enable_eip ? aws_eip.bastion.id : "" }"
     env      = "${var.env}"
@@ -66,7 +66,7 @@ data "aws_iam_policy_document" "role_policy" {
 
 # Since we *must* create an EIP, we do, but we don't attach it to the bastion
 resource "aws_eip" "bastion" {
-  vpc   = true
+  vpc = true
 }
 
 # Publish DNS Record with Public IP
@@ -80,8 +80,8 @@ resource "aws_route53_record" "bastion" {
 }
 
 resource "aws_iam_instance_profile" "bastion" {
-  name  = "${var.hostname}.${data.aws_route53_zone.zone.name}"
-  role  = "${aws_iam_role.bastion.name}"
+  name = "${var.hostname}.${data.aws_route53_zone.zone.name}"
+  role = "${aws_iam_role.bastion.name}"
 }
 
 resource "aws_iam_role" "bastion" {
@@ -114,7 +114,7 @@ module "bastion" {
   vpc_id                      = "${data.aws_vpc.vpc.id}"
   subnet_ids                  = "${var.subnet_ids}"
   keys_update_frequency       = "${var.keys_update_frequency}"
-  eip                         = "${var.enable_eip ? aws_eip.bastion.public_ip : "" }" # We *must* create an EIP resource for this conditional to work, even if enable_eip is set to false
+  eip                         = "${var.enable_eip ? aws_eip.bastion.public_ip : "" }"                                # We *must* create an EIP resource for this conditional to work, even if enable_eip is set to false
   additional_user_data_script = "${data.template_file.bastion_user_data.rendered}${var.additional_user_data_script}"
   allowed_cidr                = "${var.allowed_cidr}"
   allowed_security_groups     = "${var.allowed_security_groups}"
