@@ -69,6 +69,8 @@ Outputs
 
 - `ssh_user -
 - `security_group_id` -
+- `iam_role_arn` - ARN for the IAM Role used by the bastion host
+- `iam_instance_profile_arn` - ARN for the IAM Instance Profile used by the bastion host
 
 Authors
 =======
