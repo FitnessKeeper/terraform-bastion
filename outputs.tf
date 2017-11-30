@@ -11,7 +11,7 @@ output "eip" {
 }
 
 output "fqdn" {
-  value = "${aws_route53_record.bastion.fqdn}"
+  value = "${var.enable_eip ? join("", aws_route53_record.bastion.*.fqdn) : "not created"}"
 }
 
 output "iam_role_arn" {
