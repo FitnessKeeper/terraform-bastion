@@ -44,6 +44,7 @@ cat <<"BASTION" > /etc/consul/${svc_name}.json
 {
   "service": {
     "name": "${svc_name}",
+    "tags": ["bastion"],
     "address": "",
     "port": 22,
     "checks": [
