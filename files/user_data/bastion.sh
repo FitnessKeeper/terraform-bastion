@@ -1,3 +1,4 @@
+#!/bin/bash
 REGION=$(curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | grep region | awk -F\" '{print $4}')
 INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
 aws ec2 associate-address --region $REGION --instance-id $INSTANCE_ID --allocation-id ${eip_id}
@@ -44,13 +45,16 @@ cat <<"BASTION" > /etc/consul/${svc_name}.json
 {
   "service": {
     "name": "${svc_name}",
-    "tags": ["bastion"],
+    "tags": ["bastion","ssh"],
     "address": "",
     "port": 22,
     "checks": [
       {
-        "script": "nc localhost 22",
-        "interval": "10s"
+        "id": "ssh",
+        "name": "SSH TCP on port 22",
+        "tcp": "localhost:22",
+        "interval": "10s",
+        "timeout": "1s"
       }
     ]
   }
