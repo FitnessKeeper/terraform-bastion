@@ -45,13 +45,22 @@ cat <<"BASTION" > /etc/consul/${svc_name}.json
 {
   "service": {
     "name": "${svc_name}",
-    "tags": ["bastion","ssh"],
     "address": "",
     "port": 22,
+    "tags": ["bastion","ssh"],
     "checks": [
+      {
+        "id": "ami-up2date",
+        "name": "AMI Status",
+        "notes": "Compares the running AMI to the AMI defined in the launch config",
+        "script": "/usr/local/bin/ami_up2date.sh",
+        "interval": "10s",
+        "status": "passing"
+      },
       {
         "id": "ssh",
         "name": "SSH TCP on port 22",
+        "notes": "TCP check on port 22 for localhost",
         "tcp": "localhost:22",
         "interval": "10s",
         "timeout": "1s"
