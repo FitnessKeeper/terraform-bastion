@@ -1,3 +1,7 @@
+locals {
+  identifier = "${length(var.identifier) > 0 ? "${var.identifier}-${var.hostname}" : var.env}"
+}
+
 data "aws_route53_zone" "zone" {
   name = "${var.dns_zone}"
 }
@@ -80,12 +84,12 @@ resource "aws_route53_record" "bastion" {
 }
 
 resource "aws_iam_instance_profile" "bastion" {
-  name = "${var.hostname}.${data.aws_route53_zone.zone.name}"
+  name = "${local.identifier}-instance-profile"
   role = "${aws_iam_role.bastion.name}"
 }
 
 resource "aws_iam_role" "bastion" {
-  name               = "${var.hostname}.${data.aws_route53_zone.zone.name}-bastion-role"
+  name               = "${local.identifier}-bastion-role"
   path               = "/"
   assume_role_policy = "${data.aws_iam_policy_document.assume_role_ec2.json}"
 }
@@ -96,7 +100,7 @@ resource "aws_iam_role_policy_attachment" "attach" {
 }
 
 resource "aws_iam_role_policy" "bastion" {
-  name   = "${var.env}-bastion-policy"
+  name   = "${local.identifier}-bastion-policy"
   role   = "${aws_iam_role.bastion.id}"
   policy = "${data.aws_iam_policy_document.role_policy.json}"
 }

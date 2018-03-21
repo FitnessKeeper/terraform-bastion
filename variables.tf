@@ -31,6 +31,12 @@ variable "enable_eip" {
 
 variable "env" {}
 
+variable "identifier" {
+  type        = "string"
+  description = "Generic identifier, intended as a replacement for env (default '')"
+  default     = ""
+}
+
 variable "hostname" {
   description = "DNS Hostname for the bastion host. creates ${hostname}.${dns_zone}"
 }
