@@ -1,11 +1,11 @@
 variable "allowed_cidr" {
-  type        = "list"
+  type        = list(string)
   default     = ["0.0.0.0/0"]
   description = "A list of CIDR Networks to allow ssh access to."
 }
 
 variable "allowed_security_groups" {
-  type        = "list"
+  type        = list(string)
   default     = []
   description = "A list of Security Group ID's to allow access to."
 }
@@ -18,7 +18,8 @@ variable "ami" {
   default = ""
 }
 
-variable "aws_key_name" {}
+variable "aws_key_name" {
+}
 
 variable "dns_zone" {
   description = "route53 zone: ex. foo.example.com"
@@ -29,16 +30,17 @@ variable "enable_eip" {
   default     = true
 }
 
-variable "env" {}
+variable "env" {
+}
 
 variable "identifier" {
-  type        = "string"
+  type        = string
   description = "Generic identifier, intended as a replacement for env (default '')"
   default     = ""
 }
 
 variable "hostname" {
-  description = "DNS Hostname for the bastion host. creates ${hostname}.${dns_zone}"
+  description = "DNS Hostname for the bastion host. creates $${hostname}.$${dns_zone}"
 }
 
 variable "keys_update_frequency" {
@@ -57,8 +59,10 @@ variable "s3_bucket_name" {
 }
 
 variable "subnet_ids" {
-  type        = "list"
+  type        = list(string)
   description = "Subnet ID's use to place the bastion instance"
 }
 
-variable "vpc_id" {}
+variable "vpc_id" {
+}
+
