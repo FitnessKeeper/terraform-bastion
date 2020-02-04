@@ -1,5 +1,5 @@
 locals {
-  identifier = length(var.identifier) > 0 ? "${var.identifier}-${var.hostname}" : var.env
+  identifier = length(var.identifier) > 0 ? "${var.identifier}.${var.dns_zone}" : var.env
 }
 
 data "aws_route53_zone" "zone" {
@@ -84,7 +84,7 @@ resource "aws_route53_record" "bastion" {
 }
 
 resource "aws_iam_instance_profile" "bastion" {
-  name = "${local.identifier}-instance-profile"
+  name = "${local.identifier}"
   role = aws_iam_role.bastion.name
 }
 
