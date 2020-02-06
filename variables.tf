@@ -65,7 +65,3 @@ variable "subnet_ids" {
 
 variable "vpc_id" {
 }
-
-variable "allowed_ipv6_cidr" {
-  default = "::/0"
-}
