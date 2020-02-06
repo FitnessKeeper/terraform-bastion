@@ -106,7 +106,7 @@ resource "aws_iam_role_policy" "bastion" {
 }
 
 module "bastion" {
-  source                      = "github.com/terraform-community-modules/tf_aws_bastion_s3_keys.git?ref=v2.0.0"
+  source                      = "github.com/terraform-community-modules/tf_aws_bastion_s3_keys.git?ref=v3.0.0"
   name                        = "${var.hostname}.${data.aws_route53_zone.zone.name}"
   ssh_user                    = "ec2-user"
   instance_type               = "t2.micro"
@@ -120,7 +120,6 @@ module "bastion" {
   keys_update_frequency       = var.keys_update_frequency
   eip                         = var.enable_eip ? aws_eip.bastion.public_ip : "" # We *must* create an EIP resource for this conditional to work, even if enable_eip is set to false
   additional_user_data_script = "${data.template_file.bastion_user_data.rendered}${var.additional_user_data_script}"
-  allowed_ipv6_cidr           = var.allowed_ipv6_cidr
   allowed_cidr                = var.allowed_cidr
   allowed_security_groups     = var.allowed_security_groups
 }
